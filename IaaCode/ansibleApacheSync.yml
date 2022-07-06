@@ -1,0 +1,30 @@
+#to keep application versions or configuration files in sync across systems in a multi-cloud environment
+#ansible YAML code to ensure Apache servers are updated.
+#Ansible has modules for most cloud platforms, this code snippet could be part of a larger Ansible playbook
+#that creates a VM, installs a standard Linux image and configures Apache on multiple cloud services
+
+- hosts: webservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: write the apache config file
+    template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
+    notify:
+    - restart apache
+  - name: ensure apache is running
+    service:
+      name: httpd
+      state: started
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
