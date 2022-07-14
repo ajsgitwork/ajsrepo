@@ -1,0 +1,108 @@
+**Sample script
+http://www.ibm.com/developerworks/websphere/library/samples/SampleScripts.html
+
+http://www-01.ibm.com/support/knowledgecenter/SSAW57_8.5.5/com.ibm.websphere.nd.doc/ae/txml_scriptingep.html?lang=en
+
+http://www-01.ibm.com/support/knowledgecenter/SSAW57_8.5.5/com.ibm.websphere.nd.doc/ae/welc_howdoi_tscr.html
+
+Options for objects
+http://www-01.ibm.com/support/knowledgecenter/SSAW57_8.5.5/com.ibm.websphere.nd.doc/ae/rxml_taskoptions.html?lang=en
+
+
+** how to run wsadminlib.py
+Open the script and they have provided instructions.
+Script which I have created :
+execfile('wsadminlib.py')
+ensureHostAlias(adminVhost,jbpmdev,32000)
+
+
+** sample admin scripts
+https://developer.ibm.com/wasdev/docs/a-guide-to-the-sample-admin-scripts/
+
+
+** disable security
+https://www-304.ibm.com/support/docview.wss?uid=swg21405302
+
+**************Logs of node federation***
+bash-4.1$ ./addNode.sh vm-2e3b-f14b.nam.nsroot.net 32003 -profileName pawRschDev -conntype SOAP -username cloudappAdmin -password alakazotland123
+ADMU0116I: Tool information is being logged in file
+           /opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell/pawRschDev/logs/addNode.log
+ADMU0128I: Starting tool with the pawRschDev profile
+CWPKI0314E: The following error is returned from an exception: Exception thrown
+           in RequiredModelMBean while trying to invoke operation
+           retrieveSigners
+CWPKI0304E: The <remoteKeyStoreName> specified as
+           "CellDefaultTrustStore" was not found on the server.
+ADMU0001I: Begin federation of node pawRschDevNode with Deployment Manager at
+           vm-2e3b-f14b.nam.nsroot.net:32003.
+ADMU0009I: Successfully connected to Deployment Manager Server:
+           vm-2e3b-f14b.nam.nsroot.net:32003
+ADMU0507I: No servers found in configuration under:
+           /opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell/pawRschDev/config/cells/vm-2e3b-f14bNode01Cell/nodes/pawRschDevNode/servers
+ADMU2010I: Stopping all server processes for node pawRschDevNode
+ADMU0024I: Deleting the old backup directory.
+ADMU0015I: Backing up the original cell repository.
+ADMU0012I: Creating Node Agent configuration for node: pawRschDevNode
+ADMU0014I: Adding node pawRschDevNode configuration to cell: cloudappCell
+ADMU0016I: Synchronizing configuration between node and cell.
+ADMU0018I: Launching Node Agent process for node: pawRschDevNode
+ADMU0020I: Reading configuration for Node Agent process: nodeagent
+ADMU0022I: Node Agent launched. Waiting for initialization status.
+ADMU0031E: Node Agent launched but failed initialization. Process id was: 16420
+ADMU0300I: The node pawRschDevNode was successfully added to the cloudappCell   cell.
+ADMU0306I: Note:
+ADMU0302I: Any cell-level documents from the standalone cloudappCell
+           configuration have not been migrated to the new cell.
+ADMU0307I: You might want to:
+ADMU0303I: Update the configuration on the cloudappCell Deployment Manager with
+           values from the old cell-level documents.
+ADMU0306I: Note:
+ADMU0304I: Because -includeapps was not specified, applications installed on
+           the standalone node were not installed on the new cell.
+ADMU0307I: You might want to:
+ADMU0305I: Install applications onto the cloudappCell cell using wsadmin
+           $AdminApp or the Administrative Console.
+ADMU0003I: Node pawRschDevNode has been successfully federated.
+************
+
+********node creation script
+#!/bin/sh
+#Creation of node (nodeagent)
+export WAS_BINARY="/opt/middleware/cloudapp/WebSphere/85-64"
+export PROFILE_NAME="pawRschDev"
+export Node_PROFILE_Path="/opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell/${PROFILE_NAME}"
+export Node_templatePath="/opt/middleware/cloudapp/WebSphere/85-64/profileTemplates/managed"
+export cell_name="cloudappCell"
+export NODE_NAME="pawRschDevNode"
+export HOST="vm-2e3b-f14b.nam.nsroot.net"
+export Base_Starting_Port="33100"
+export DMGR_HOST="vm-2e3b-f14b.nam.nsroot.net"
+export DMGR_SOAP_PORT="32003"
+export DMGR_ADMIN_USER="cloudappAdmin"
+export DMGR_ADMIN_PASSWORD="alakazotland123"
+
+
+${WAS_BINARY}/bin/manageprofiles.sh -create -profileName ${PROFILE_NAME} -profilePath ${Node_PROFILE_Path} -templatePath ${Node_templatePath} -nodeName ${NODE_NAME} -hostName ${HOST} -enableAdminSecurity true -federateLater false -startingPort ${Base_Starting_Port} -dmgrHost ${DMGR_HOST} -dmgrPort ${DMGR_SOAP_PORT} -dmgrAdminUserName ${cloudappAdmin} -dmgrAdminPassword ${DMGR_ADMIN_PASSWORD}
+
+*************other node related command
+**runtime logs
+  /opt/middleware/cloudapp/cloudapp_Runtime/logs
+
+**backup
+./manageprofiles.sh -backupProfile -profileName cloudappDmgr -backupFile /opt/middleware/cloudapp/cloudapp_Runtime/backup/dmgrProfile_bkp_23Sep15.tar
+
+**create node
+-> created script.
+
+**addnode
+Go to profile of node folder,then 
+./addNode.sh vm-2e3b-f14b.nam.nsroot.net 32003 -profileName pawRschDev -conntype SOAP -startingport 32400 -username cloudappAdmin -password alakazotland123
+
+**delete node
+./manageprofiles.sh -delete -profileName pawRschDev 
+
+**removenode
+Go to profile of node folder,then 
+./removeNode.sh -profileName pawRschDev
+
+(it will ask for DMGR id/pass if security is enabled)

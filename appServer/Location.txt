@@ -1,0 +1,48 @@
+WAS8.5.5.1
+	Base location : /opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell
+	
+	** Nomenclature
+	pawRschNodeDev
+	pawRschServer
+	pawRschCluster
+	paw_host
+	
+	 Logs
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/logs/pawRschServer
+	
+	start/stop
+	Server
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/startServer.sh  pawRschServer
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/stopServer.sh  pawRschServer
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/serverStatus.sh -all
+	NodeAgent
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/stopServer.sh nodeagent
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/startServer.sh nodeagent
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Profile/bin/serverStatus.sh -all
+	Deployment Manager
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Dmgr/bin/stopServer.sh dmgr
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Dmgr/bin/startServer.sh dmgr
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Dmgr/bin/serverStatus.sh -all
+	
+	config location on UAT
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Dmgr/config/cells/jbpm2Cell/<key.p12 or trust.p12>
+	Node level
+	/opt/middleware/jbpm2/jbpm2_Runtime/profiles/jbpm2Cell/jbpm2Dmgr/config/cells/jbpm2Cell/nodes/jbpm2ProfileNodeibdcajbpm1u
+	
+		
+	** From dev box (Result of execution of version.sh)
+	/opt/middleware/cloudapp/emt-was/855/bin/versionInfo.sh
+	******************************************************************
+	
+	**serverindex  locatino**
+	/opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell/cloudappDmgr/config/cells/cloudappCell/nodes/cloudappDmgrNode/serverindex.xml
+	
+	**security.xml**
+	/opt/middleware/cloudapp/cloudapp_Runtime/profiles/cloudappCell/cloudappDmgr/config/cells/cloudappCell
+	
+	
+		1) Cell name - cloudappCell
+		2) Profile applied - Cell profile ( It contains 2 application node having 1 server each + 1 deployment manager node)
+	
+	OS : Red Hat Enterprise Linux Server release 6.5 (Santiago)
+	/opt/middleware/jbpm2/WebSphere/85-64/bin/versioninfo.sh
